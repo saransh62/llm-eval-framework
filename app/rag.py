@@ -49,8 +49,7 @@ class RAGPipeline:
         return AskResult(
             answer=answer,
             sources=[
-                {"doc_id": r.chunk.doc_id, "chunk_id": r.chunk.chunk_id, "score": round(r.score, 4)}
-                for r in retrieved
+                {"doc_id": r.chunk.doc_id, "chunk_id": r.chunk.chunk_id, "score": round(r.score, 4)} for r in retrieved
             ],
             citations=parse_citations(answer),
             refused=is_refusal(answer),

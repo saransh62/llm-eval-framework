@@ -25,8 +25,10 @@ def test_fake_llm_is_deterministic(retriever):
 
 
 def test_fake_judge_returns_valid_json():
-    user = "<reference>$49 per month</reference><context>Pro costs $49 per month.</context>" \
+    user = (
+        "<reference>$49 per month</reference><context>Pro costs $49 per month.</context>"
         "<answer>Pro costs $49 per month [pricing]. It includes a pony.</answer>"
+    )
     verdict = json.loads(FakeJudgeLLM().complete("judge", user).text)
     assert 1 <= verdict["score"] <= 5
     assert [c["supported"] for c in verdict["claims"]] == [True, False]

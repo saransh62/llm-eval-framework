@@ -46,8 +46,12 @@ def test_anthropic_request_and_response(monkeypatch):
 
 
 def test_anthropic_safety_refusal_maps_to_refusal_text(monkeypatch):
-    resp = SimpleNamespace(stop_reason="refusal", content=[], usage=SimpleNamespace(input_tokens=5,
-                           output_tokens=0), model="claude-opus-5-5")
+    resp = SimpleNamespace(
+        stop_reason="refusal",
+        content=[],
+        usage=SimpleNamespace(input_tokens=5, output_tokens=0),
+        model="claude-opus-5-5",
+    )
     llm, _ = _anthropic(monkeypatch, resp)
     assert llm.complete("s", "u").text == REFUSAL
 

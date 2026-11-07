@@ -5,9 +5,7 @@ from app.retrieval import BM25Retriever, ScoredChunk, tokenize, unique_doc_ids
 
 
 def test_tokenize_lowercases_drops_stopwords_keeps_decimals():
-    assert tokenize("What is the Pro plan's uptime? 99.9% on Acme Cloud") == [
-        "pro", "plan", "s", "uptime", "99.9"
-    ]
+    assert tokenize("What is the Pro plan's uptime? 99.9% on Acme Cloud") == ["pro", "plan", "s", "uptime", "99.9"]
 
 
 def test_empty_retriever_rejected():

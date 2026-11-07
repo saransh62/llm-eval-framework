@@ -45,6 +45,14 @@ def parse_citations(answer: str) -> list[str]:
     return list(seen)
 
 
+_DECLINE = re.compile(
+    r"^(i don't know|i do not know|i can't|i cannot|i can not|i won't|i will not|i'm not able|i am not able"
+    r"|i'm unable|i am unable|sorry, (but )?i can|i'm sorry, (but )?i (can|won't|cannot))",
+    re.I,
+)
+
+
 def is_refusal(answer: str) -> bool:
-    normalized = answer.strip().strip('"').lower()
-    return normalized.startswith(REFUSAL.lower()[:-1]) or normalized.startswith("i don't know")
+    """True when the answer declines instead of answering (the exact refusal or a common decline opener)."""
+    normalized = answer.strip().strip('"').replace("\u2019", "'")
+    return normalized.lower().startswith(REFUSAL.lower()[:-1]) or bool(_DECLINE.match(normalized))
