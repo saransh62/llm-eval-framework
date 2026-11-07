@@ -28,7 +28,8 @@ with concise answers.
    clients live in **`providers.py`** and are imported lazily.
 6. **`providers.py`**: `AnthropicLLM` calls the Messages API with `output_config.effort`, enables server-side
    refusal fallback where supported, and maps a safety `stop_reason == "refusal"` to the refusal sentence.
-   `OpenAILLM` uses Chat Completions with `temperature` from config.
+   `OpenAILLM` uses Chat Completions with `temperature` from config. **`claude_cli.py`** (`ClaudeCLILLM`) shells
+   out to `claude -p` with tools off and JSON output, so the eval can run on a Claude subscription without a key.
 7. **`rag.py`**: `RAGPipeline.ask` = retrieve, build prompt, call the LLM, then parse citations and refusal,
    and time the whole thing. `AskResult` keeps the retrieved chunks so the evals can judge faithfulness
    against exactly what the model saw.

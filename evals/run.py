@@ -9,6 +9,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import os
+import shutil
 import subprocess
 import sys
 import time
@@ -44,7 +45,7 @@ def parse_args(argv: list[str] | None) -> argparse.Namespace:
     env_sample = os.getenv("EVAL_SAMPLE")
     p.add_argument("--sample", type=int, default=int(env_sample) if env_sample else None, help="questions to run")
     p.add_argument("--seed", type=int, default=7, help="sampling seed")
-    p.add_argument("--provider", choices=["fake", "anthropic", "openai"], help="overrides LLM_PROVIDER")
+    p.add_argument("--provider", choices=["fake", "anthropic", "openai", "claude-cli"], help="overrides LLM_PROVIDER")
     p.add_argument("--workers", type=int, default=4)
     p.add_argument("--out", type=Path, default=REPORTS_DIR)
     p.add_argument("--cache-dir", type=Path, default=DEFAULT_CACHE_DIR)
@@ -64,6 +65,10 @@ def main(argv: list[str] | None = None) -> int:
     for provider in {settings.llm.provider, settings.judge.provider} & set(_KEY_ENV):
         if not os.getenv(_KEY_ENV[provider]):
             print(f"error: {_KEY_ENV[provider]} is not set (provider={provider})", file=sys.stderr)
+            return 2
+    if "claude-cli" in {settings.llm.provider, settings.judge.provider}:
+        if not shutil.which(os.getenv("CLAUDE_CLI", "claude")):
+            print("error: the claude CLI is not on PATH (provider=claude-cli)", file=sys.stderr)
             return 2
 
     items = sample(load_dataset(), args.sample, args.seed)

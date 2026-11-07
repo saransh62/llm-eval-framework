@@ -1,19 +1,21 @@
 # Runtime configuration. Every key can be overridden by the env var shown in brackets.
 llm:
-  provider: fake            # [LLM_PROVIDER] fake | anthropic | openai
+  provider: fake            # [LLM_PROVIDER] fake | anthropic | openai | claude-cli
   models:                   # [LLM_MODEL] overrides the model for the chosen provider
     anthropic: claude-opus-5-5
     openai: gpt-4.1-mini
+    claude-cli: claude-sonnet-5-5   # local `claude -p` on a Claude subscription, no API key
     fake: fake-extractive-v1
   temperature: 0            # [LLM_TEMPERATURE] sent to OpenAI; see README "Assumptions" for Anthropic
   max_tokens: 2048          # [LLM_MAX_TOKENS]
-  effort: low               # [LLM_EFFORT] Anthropic output_config.effort
+  effort: low               # [LLM_EFFORT] Anthropic output_config.effort / claude --effort
 
 judge:
   provider: null            # [JUDGE_PROVIDER] defaults to llm.provider
   models:                   # [JUDGE_MODEL]
     anthropic: claude-opus-5-5
     openai: gpt-4.1
+    claude-cli: claude-sonnet-5-5
     fake: fake-judge-v1
   temperature: 0
   max_tokens: 4096

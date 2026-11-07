@@ -113,4 +113,8 @@ def make_llm(cfg: ModelConfig, *, judge: bool = False) -> LLMClient:
         from app.providers import OpenAILLM
 
         return OpenAILLM(cfg)
-    raise ValueError(f"Unknown LLM provider: {cfg.provider!r} (expected fake, anthropic or openai)")
+    if cfg.provider == "claude-cli":
+        from app.claude_cli import ClaudeCLILLM
+
+        return ClaudeCLILLM(cfg)
+    raise ValueError(f"Unknown LLM provider: {cfg.provider!r} (expected fake, anthropic, openai or claude-cli)")

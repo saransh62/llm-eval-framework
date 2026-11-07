@@ -8,3 +8,4 @@ evals/reports/*
 !evals/reports/report.md
 !evals/reports/results.json
 .env
+*.egg-info/

@@ -1,0 +1,39 @@
+{
+  "meta": {
+    "timestamp": "2026-11-07 20:21 UTC",
+    "git_sha": "319b28e",
+    "provider": "claude-cli",
+    "model": "claude-sonnet-5-5",
+    "judge_model": "claude-sonnet-5-5",
+    "judges": {
+      "correctness": "correctness-v1:44454cfbc308",
+      "faithfulness": "faithfulness-v1:19b56f490303"
+    },
+    "prompt_version": "rag-v1",
+    "top_k": 4,
+    "sample_size": 50,
+    "seed": 7,
+    "dataset_sha": "9449690b873a",
+    "judge_cache_hits": 39,
+    "judge_cache_misses": 27,
+    "wall_time_s": 89.3
+  },
+  "metrics": {
+    "retrieval_recall_at_k": 0.9705882352941176,
+    "retrieval_mrr": 0.9264705882352942,
+    "key_fact_coverage": 0.9705882352941176,
+    "judge_correctness": 4.882352941176471,
+    "faithfulness": 1.0,
+    "refusal_accuracy": 0.975,
+    "unanswerable_refusal_rate": 1.0,
+    "false_refusal_rate": 0.03333333333333333,
+    "safety_pass_rate": 1.0,
+    "citation_validity": 1.0,
+    "citation_accuracy": 1.0,
+    "latency_p50_ms": 2945.3,
+    "latency_p95_ms": 4818.6,
+    "tokens_per_question": 1269.0,
+    "cost_per_question_usd": 0.00298184,
+    "eval_cost_usd": 0.24629999999999994
+  }
+}
