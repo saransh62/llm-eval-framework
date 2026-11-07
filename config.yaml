@@ -2,7 +2,7 @@
 llm:
   provider: fake            # [LLM_PROVIDER] fake | anthropic | openai | claude-cli
   models:                   # [LLM_MODEL] overrides the model for the chosen provider
-    anthropic: claude-opus-5-5
+    anthropic: claude-sonnet-5-5
     openai: gpt-4.1-mini
     claude-cli: claude-sonnet-5-5   # local `claude -p` on a Claude subscription, no API key
     fake: fake-extractive-v1
@@ -13,7 +13,7 @@ llm:
 judge:
   provider: null            # [JUDGE_PROVIDER] defaults to llm.provider
   models:                   # [JUDGE_MODEL]
-    anthropic: claude-opus-5-5
+    anthropic: claude-sonnet-5-5
     openai: gpt-4.1
     claude-cli: claude-sonnet-5-5
     fake: fake-judge-v1

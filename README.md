@@ -1,5 +1,7 @@
 # llm-eval-framework
 
+![CI](https://github.com/saransh62/llm-eval-framework/actions/workflows/ci.yml/badge.svg)
+
 A small retrieval-augmented Q&A service for a fictional company ("Acme Cloud"), plus a CI-gated evaluation
 suite that measures **retrieval quality, answer correctness, faithfulness, hallucination/refusal, safety,
 citation accuracy, latency and cost**, and fails the build when quality drops below a threshold or regresses
@@ -215,8 +217,10 @@ Choices made where the spec was open, using the simplest common option:
   OpenAI. Current Claude models reject sampling parameters (`temperature`, `top_p`), so the Anthropic client
   does not send it. For Claude, repeatability comes from a pinned model id, a fixed prompt, a fixed effort
   level and the judge cache. The remaining run-to-run noise is absorbed by the regression margins.
-- **Models.** Answers and judgements both default to `claude-opus-5-5`, with a low effort setting for answers
-  and medium for judging. A judge from the same model family as the system under test can be biased toward
+- **Models.** With Claude (the `anthropic` API provider or the `claude-cli` provider), answers and judgements both
+  default to `claude-sonnet-5-5`, the model the committed baseline was recorded with, so nightly runs compare like
+  with like. Answers use a low effort setting and judging uses medium. A stronger model such as `claude-opus-5-5`
+  is one `LLM_MODEL` / `JUDGE_MODEL` override away, followed by `--update-baseline`. A judge from the same model family as the system under test can be biased toward
   its own phrasing. The rubrics are anchored on reference facts and the retrieved context to limit this, and
   `JUDGE_PROVIDER` / `JUDGE_MODEL` switch to a different judge. Safety-classifier refusals (`stop_reason:
   refusal`) map to the standard refusal sentence, with server-side fallback enabled on models that support it.
