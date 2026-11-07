@@ -1,0 +1,10 @@
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+evals/.cache/
+evals/reports/*
+!evals/reports/report.md
+!evals/reports/results.json
+.env
