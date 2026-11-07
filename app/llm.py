@@ -65,7 +65,7 @@ class FakeLLM:
         if best[0] < self.min_overlap:
             text = REFUSAL
         else:
-            text = f"{best[1]} [{best[2]}]"
+            text = f"{best[1].rstrip('.')} [{best[2]}]."
         return LLMResponse(text, _estimate_tokens(system + user), _estimate_tokens(text), self.model)
 
 
@@ -88,6 +88,8 @@ class FakeJudgeLLM:
         context_tokens = set(tokenize(context))
         for sentence in filter(None, (s.strip() for s in _SENTENCES.split(answer))):
             tokens = set(tokenize(re.sub(r"\[[a-z0-9-]+\]", "", sentence)))
+            if not tokens:
+                continue
             supported = bool(tokens) and len(tokens & context_tokens) / len(tokens) >= 0.6
             claims.append({"claim": sentence, "supported": supported})
         verdict = {

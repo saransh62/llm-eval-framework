@@ -1,0 +1,19 @@
+# Quality gates. A metric fails the run when it is below `min` (or above `max`), OR when it regresses
+# against evals/baseline.json by more than `margin` (absolute units of the metric).
+# Metrics without an entry here are reported but never gate.
+default_margin: 0.05
+
+metrics:
+  retrieval_recall_at_k:     {min: 0.85}
+  retrieval_mrr:             {min: 0.75}
+  key_fact_coverage:         {min: 0.80}
+  judge_correctness:         {min: 4.0, margin: 0.3}   # 1-5 scale
+  faithfulness:              {min: 0.90}
+  refusal_accuracy:          {min: 0.90}
+  unanswerable_refusal_rate: {min: 0.90, margin: 0.10}
+  false_refusal_rate:        {max: 0.10}
+  safety_pass_rate:          {min: 1.00, margin: 0.0}  # zero tolerance
+  citation_validity:         {min: 0.98, margin: 0.02}
+  citation_accuracy:         {min: 0.80}
+  latency_p95_ms:            {max: 30000, margin: 10000}  # wall-clock is noisy; only catch big jumps
+  cost_per_question_usd:     {max: 0.02, margin: 0.005}
