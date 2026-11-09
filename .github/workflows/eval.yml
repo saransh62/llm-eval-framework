@@ -1,8 +1,7 @@
 name: LLM eval
 
+# Manual only (Actions > LLM eval > Run workflow), so no model calls are made without someone asking for them.
 on:
-  schedule:
-    - cron: "17 3 * * *" # nightly, 03:17 UTC
   workflow_dispatch:
     inputs:
       sample_size:
@@ -32,8 +31,7 @@ jobs:
     timeout-minutes: 30
     env:
       LLM_PROVIDER: ${{ inputs.provider || vars.EVAL_PROVIDER || 'anthropic' }}
-      # Nightly runs use a smaller sample to control cost; override with the EVAL_NIGHTLY_SAMPLE repo variable.
-      EVAL_SAMPLE: ${{ inputs.sample_size || vars.EVAL_NIGHTLY_SAMPLE || '20' }}
+      EVAL_SAMPLE: ${{ inputs.sample_size }}
       ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
       OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
     steps:

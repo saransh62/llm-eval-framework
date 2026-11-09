@@ -179,13 +179,15 @@ changes the baseline is therefore visible in review.
 
 ## CI
 
-- **[ci.yml](.github/workflows/ci.yml)**, on every push and pull request: `ruff check`, `ruff format --check`, the
-  offline test suite, and a 5-question FakeLLM smoke run of the eval harness. Needs no secrets.
-- **[eval.yml](.github/workflows/eval.yml)**, nightly at 03:17 UTC and on manual `workflow_dispatch`: runs the full
-  LLM evaluation with `ANTHROPIC_API_KEY` (or `OPENAI_API_KEY`) from repository secrets. Sample size is a
-  dispatch input (default 50), and nightly runs use the `EVAL_NIGHTLY_SAMPLE` repository variable (default 20)
-  to control cost. The judge cache is persisted with `actions/cache`, the summary table is posted to the job
-  summary, and `report.md` / `results.json` are uploaded as artifacts.
+- **[ci.yml](.github/workflows/ci.yml)**, on pushes to `main` and pull requests that change code, tests, config
+  or data, and on demand. Edits to README, DESIGN, LEARNING or the saved reports alone do not trigger it. It runs
+  `ruff check`, `ruff format --check`, the offline test suite, and a 5-question FakeLLM smoke run of the eval
+  harness. Needs no secrets.
+- **[eval.yml](.github/workflows/eval.yml)**, manual only (`workflow_dispatch`), so no model calls happen unless
+  someone starts it. It runs the full LLM evaluation with `ANTHROPIC_API_KEY` (or `OPENAI_API_KEY`) from repository
+  secrets. Sample size is a dispatch input (default 50; a smaller stratified sample costs less). The judge cache is
+  persisted with `actions/cache`, the summary table is posted to the job summary, and `report.md` /
+  `results.json` are uploaded as artifacts.
 
 ## Cost per run
 
@@ -218,7 +220,7 @@ Choices made where the spec was open, using the simplest common option:
   does not send it. For Claude, repeatability comes from a pinned model id, a fixed prompt, a fixed effort
   level and the judge cache. The remaining run-to-run noise is absorbed by the regression margins.
 - **Models.** With Claude (the `anthropic` API provider or the `claude-cli` provider), answers and judgements both
-  default to `claude-sonnet-5-5`, the model the committed baseline was recorded with, so nightly runs compare like
+  default to `claude-sonnet-5-5`, the model the committed baseline was recorded with, so CI runs compare like
   with like. Answers use a low effort setting and judging uses medium. A stronger model such as `claude-opus-5-5`
   is one `LLM_MODEL` / `JUDGE_MODEL` override away, followed by `--update-baseline`. A judge from the same model family as the system under test can be biased toward
   its own phrasing. The rubrics are anchored on reference facts and the retrieved context to limit this, and
@@ -243,6 +245,6 @@ Choices made where the spec was open, using the simplest common option:
   removing citations. `a|b` in a fact means any alternative counts.
 - **Sampling.** `--sample N` takes a deterministic sample (seed 7) stratified by category, so small samples
   still cover every metric. Comparing a small sample against a 50-question baseline is noisier. The
-  nightly default of 20 trades precision for cost.
+  `sample_size` input of the eval workflow trades precision for cost the same way.
 - **Baseline updates** are manual (CLI flag or workflow input, then commit). CI never commits on its own.
 - **Tooling.** Python 3.11, `uv` locally and `pip` in CI, `ruff` for lint and formatting.

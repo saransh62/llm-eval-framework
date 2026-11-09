@@ -74,6 +74,6 @@ documents**. This catches the most common silent eval bug: a golden label the co
 - **Comparability:** the baseline stores the git sha, models, prompt version, judge fingerprints, dataset hash,
   sample size and seed, so a reviewer can see when a comparison is apples-to-oranges (for example after a
   judge rubric change, which should normally come with a baseline update in the same pull request).
-- **Small samples:** stratified sampling keeps every category present. With a 20-question nightly sample,
+- **Small samples:** stratified sampling keeps every category present. With a 20-question sample,
   one item is worth 5-10 percentage points on a category metric, which is why margins are not tighter.
   Run the full 50 before accepting a new baseline.

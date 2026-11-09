@@ -60,7 +60,7 @@ with concise answers.
 ### 3. Tests and CI
 
 `tests/` runs offline in about 2 seconds. `ci.yml` runs lint, the tests and a FakeLLM smoke eval on every
-push. `eval.yml` runs the real evaluation nightly and on demand, with the judge cache restored from
+push. `eval.yml` runs the real evaluation on demand, with the judge cache restored from
 `actions/cache`.
 
 ## Interview questions
@@ -117,7 +117,7 @@ cannot trigger actions), and keep regression tests for every known attack. No pr
 defence, which is why it is measured continuously.
 
 **10. How is cost controlled?**
-Stratified sampling for nightly runs (20 questions) with the full set on demand, a judge cache so unchanged
+The real-model eval runs only on demand, with stratified sampling for cheap runs (for example 20 questions) and the full set before a baseline update, a judge cache so unchanged
 answers are never re-judged, skipping the faithfulness judge for refusals, low effort for answers, offline
 fakes for all development and CI, and a `cost_per_question_usd` gate so a prompt that doubles token usage
 fails the build.
